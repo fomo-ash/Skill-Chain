@@ -1,12 +1,15 @@
 const hre= require("hardhat")
 
 async function main() {
-    const SkillPassport= await hre.ethers.getContractFactory("Skill-Passport")
+    const SkillPassport= await hre.ethers.getContractFactory("SkillPassport")
 
     const skillPassport = await SkillPassport.deploy();
 
-  await skillPassport.deployed();
-  console.log("SkillPassport deployed to:", skillPassport.address);
+  await skillPassport.
+  waitForDeployment();
+
+  const contractAddress= await skillPassport.getAddress();
+  console.log("SkillPassport deployed to:", contractAddress);
 }
 
 main().catch((error) => {
