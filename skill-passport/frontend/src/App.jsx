@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/home/SignUpPage';
 import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
+import About from './pages/About/About';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         
+        <Route path="/about" element={<About />} /> 
         <Route 
           path="/login" 
           element={user ? <Navigate to="/dashboard" /> : <LoginPage handleLoginSuccess={handleLoginSuccess} />}
@@ -32,9 +34,9 @@ function App() {
           path="/dashboard" 
           element={user ? <DashboardPage user={user} /> : <Navigate to="/login" />} 
         />
-        
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+
        
           <div className="h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-pink-500">
      
