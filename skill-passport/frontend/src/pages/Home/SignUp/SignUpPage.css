@@ -96,3 +96,14 @@ a {
 .left-side img{
   height: 100px;
 }
+.para{
+  padding-top: 4%;
+}
+.acc-btns{
+  display: flex;
+  gap: 5%;
+}
+.acc-btns button{
+  width: 150px;
+  height: 60px;
+}
