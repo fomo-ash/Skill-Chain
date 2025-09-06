@@ -422,6 +422,7 @@ const App = () => {
                     <Link to="/signup">Sign-Up</Link>
                     <Link to="/login">Login</Link>
                     <Link to="/about">About</Link>
+                    <Link to="/contact">Contact</Link>
                     
                 </nav>
                 <button className="btn join-btn">Join Now</button>
