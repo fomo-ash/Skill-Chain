@@ -5,13 +5,14 @@ import LoginPage from './pages/Home/LoginPage/LoginPage';
 import SignUpPage from './pages/Home/SignUp/SignUpPage';
 import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
+import About from './pages/About/About';
 
 function App() {
   const [user, setUser] = useState(null);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setUser({ email: 'test@user.com' });
+  // This function is passed to LoginPage and sets the user state upon successful API call
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
   };
   
   return (
@@ -21,20 +22,21 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         
+        <Route path="/about" element={<About />} /> 
         <Route 
           path="/login" 
-          element={user ? <Navigate to="/dashboard" /> : <LoginPage handleLogin={handleLogin} />}
+          element={user ? <Navigate to="/dashboard" /> : <LoginPage handleLoginSuccess={handleLoginSuccess} />}
         />
         
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <SignUpPage />} />
 
         <Route 
           path="/dashboard" 
           element={user ? <DashboardPage user={user} /> : <Navigate to="/login" />} 
         />
-        
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+
        
           <div className="h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-pink-500">
      
