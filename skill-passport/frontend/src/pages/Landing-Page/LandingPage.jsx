@@ -16,7 +16,7 @@ const App = () => {
                     background: linear-gradient(135deg, #1f1f3a, #1a1a2e);
                     color: #e0e0e0;
                     min-height: 200vh;
-                    padding-top: 1rem;
+                    padding-top: 0rem;
                 }
 
                 .glow-effect {
@@ -45,7 +45,7 @@ const App = () => {
                     top: 0;
                     left: 0;
                     width: 100%;
-                    padding: 1rem 2rem;
+                    padding: 1rem 1rem;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -98,7 +98,7 @@ const App = () => {
                 }
                 @media (min-width: 768px) {
                     .main-content {
-                        padding: 0 2rem;
+                        padding: 0 3rem;
                     }
                     .header .nav {
                         display: flex;
