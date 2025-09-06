@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const LoginPage = () => {
+// This prop will be passed down from App.jsx to update the parent state
+const LoginPage = ({ handleLoginSuccess }) => {
   const navigate = useNavigate();
 
-  // form state
+  // Form state for email and password
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -14,12 +15,12 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // handle input change
+  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // handle login submit
+  // Handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -27,17 +28,18 @@ const LoginPage = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3790/api/auth/login", // backend login route
-        formData,
-        { withCredentials: true }
+        "http://localhost:3790/api/auth/login", // Your backend login route
+        formData
       );
 
-      console.log("Login success:", res.data);
-      alert("Login successful!");
-      navigate("/dashboard"); // redirect after login
+      // On successful login, call the function passed from App.jsx
+      handleLoginSuccess(res.data);
+
+      // The navigation will now be handled automatically by the router in App.jsx
+
     } catch (err) {
       console.error("Login error:", err);
-      setError(err.response?.data?.message || "Login failed. Try again.");
+      setError(err.response?.data?.error || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -71,7 +73,7 @@ const LoginPage = () => {
             />
           </div>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p style={{ color: "red", textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
 
           <div className="signup-btn">
             <button type="submit" disabled={loading}>
@@ -90,6 +92,9 @@ const LoginPage = () => {
                 <img src="/apple.png" alt="Apple" />
               </button>
             </div>
+             <p className="para" style={{ marginTop: '1rem' }}>
+                Don't have an account? <Link to="/signup">Sign Up</Link>
+            </p>
           </div>
         </form>
       </div>
