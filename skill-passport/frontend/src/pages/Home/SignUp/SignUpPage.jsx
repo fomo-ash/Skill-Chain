@@ -1,78 +1,108 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './SignUpPage.css'
-
-
-const handleSignUp = (e) => {
-  e.preventDefault();
-  alert("Sign up successful! (Simulated). You can now log in.");
-};
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './SignUpPage.css';
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
+  // state for form inputs
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // handle input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // submit signup form
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await axios.post(
+        "http://localhost:3790/api/auth/signup",  // backend signup route
+        formData,
+        { withCredentials: true } // allow cookies (JWT if you’re using it)
+      );
+
+      console.log("Signup success:", res.data);
+      alert("Account created successfully!");
+      navigate("/login"); // redirect to login page
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "Signup failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    // <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
-    //   <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
-    //     <h2 className="text-3xl font-bold mb-6 text-center">Create Your Account</h2>
-    //     <form onSubmit={handleSignUp}>
-    //       <div className="mb-4">
-    //         <label className="block text-gray-400 mb-2" htmlFor="email">Email Address</label>
-    //         <input 
-    //           type="email" 
-    //           id="email"
-    //           className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    //           placeholder="you@example.com"
-    //           required
-    //         />
-    //       </div>
-    //       <div className="mb-6">
-    //         <label className="block text-gray-400 mb-2" htmlFor="password">Password</label>
-    //         <input 
-    //           type="password" 
-    //           id="password"
-    //           className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    //           placeholder="••••••••"
-    //           required
-    //         />
-    //       </div>
-    //       <button 
-    //         type="submit"
-    //         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition-colors text-lg"
-    //       >
-    //         Sign Up
-    //       </button>
-    //     </form>
-    //     <p className="text-center text-gray-400 mt-6">
-    //       Already have an account? <Link to="/login" className="text-indigo-400 hover:underline">Log In</Link>
-    //     </p>
-    //   </div>
-    // </div>
-    <div className='sign-up'>
+    <div className="sign-up">
       <div className="right-side">
         <h1>Join Skill Chain</h1>
         <p>Create your account and start growing!</p>
-        <div className="inputs">
-          <input className='input' type='text' placeholder='Name'/>
-          <input className='input' type='text' placeholder='Email'/>
-          <input className='input' type='text' placeholder='Password'/>
-        </div>
-        <input type='checkbox'/>
-        <label htmlFor=''>I Agree with privacy policy</label>
-        <div className="signup-btn">
-        <button>Sign Up</button>
-        </div>
+        <form onSubmit={handleSignUp}>
+          <div className="inputs">
+            <input
+              className="input"
+              type="text"
+              name="fullname"
+              placeholder="Name"
+              value={formData.fullname}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className="input"
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className="input"
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <input type="checkbox" required />
+            <label>I Agree with privacy policy</label>
+          </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          <div className="signup-btn">
+            <button type="submit" disabled={loading}>
+              {loading ? "Signing Up..." : "Sign Up"}
+            </button>
+          </div>
+        </form>
         <div className="login">
-          <p>Already have an account ?</p>
-          <Link 
-            to="/login" 
-            className="bg-indigo-600 hover:bg-indigo-700 text-white no-underline font-bold py-2 px-4 rounded-md transition-colors text-sm sm:text-base" 
+          <p>Already have an account?</p>
+          <Link
+            to="/login"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white no-underline font-bold py-2 px-4 rounded-md transition-colors text-sm sm:text-base"
           >
             Log In
           </Link>
-
         </div>
       </div>
       <div className="left-side">
-        <img src='/Frame 120.png'></img>
+        <img src="/Frame 120.png" alt="Future" />
         <h1>Welcome to the Future</h1>
         <p>The future begins with you. Join us today to unlock your vision.</p>
       </div>

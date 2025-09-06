@@ -1,48 +1,53 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const LoginPage = ({ handleLogin }) => {
+// This prop will be passed down from App.jsx to update the parent state
+const LoginPage = ({ handleLoginSuccess }) => {
+  const navigate = useNavigate();
+
+  // Form state for email and password
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle form submission
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await axios.post(
+        "http://localhost:3790/api/auth/loginyes ", // backend login route
+        formData,
+        { withCredentials: true }
+      );
+
+      // On successful login, call the function passed from App.jsx
+      handleLoginSuccess(res.data);
+
+      // The navigation will now be handled automatically by the router in App.jsx
+
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.response?.data?.error || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    // <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
-    //   <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
-    //     <h2 className="text-3xl font-bold mb-6 text-center">Welcome Back</h2>
-    //     <form onSubmit={handleLogin}>
-    //       <div className="mb-4">
-    //         <label className="block text-gray-400 mb-2" htmlFor="email">Email Address</label>
-    //         <input 
-    //           type="email" 
-    //           id="email"
-    //           className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    //           placeholder="you@example.com"
-    //           defaultValue="test@user.com" 
-    //           required
-    //         />
-    //       </div>
-    //       <div className="mb-6">
-    //         <label className="block text-gray-400 mb-2" htmlFor="password">Password</label>
-    //         <input 
-    //           type="password" 
-    //           id="password"
-    //           className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-    //           placeholder="••••••••"
-    //           defaultValue="password"
-    //           required
-    //         />
-    //       </div>
-    //       <button 
-    //         type="submit"
-    //         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition-colors text-lg"
-    //       >
-    //         Log In
-    //       </button>
-    //     </form>
-    //     <p className="text-center text-gray-400 mt-6">
-    //       Don't have an account? <Link to="/signup" className="text-indigo-400 hover:underline">Sign Up</Link>
-    //     </p>
-    //   </div>
-    // </div>
-
-    <div className='sign-up'>
+    <div className="sign-up">
       <div className="right-side">
         <h1>Welcome Back</h1>
         <p>Login and continue growing!</p>
@@ -59,13 +64,65 @@ const LoginPage = ({ handleLogin }) => {
           <button>Apple</button>
         </div>
       </div>
+
+        <form onSubmit={handleLogin}>
+          <div className="inputs">
+            <input
+              className="input"
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className="input"
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {error && <p style={{ color: "red", textAlign: 'center', marginTop: '1rem' }}>{error}</p>}
+
+          <div className="signup-btn">
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+
+            <p className="para">Or continue with</p>
+            <div className="acc-btns">
+              <button type="button">
+                <img src="/facebook.png" alt="Facebook" />
+              </button>
+              <button type="button">
+                <img src="/devicon_google.png" alt="Google" />
+              </button>
+              <button type="button">
+                <img src="/apple.png" alt="Apple" />
+              </button>
+            </div>
+             <p className="para" style={{ marginTop: '1rem' }}>
+                Don't have an account? <Link to="/signup">Sign Up</Link>
+            </p>
+          </div>
+        </form>
       </div>
+
       <div className="left-side">
-        <img src='/Frame 120.png'></img>
+        <img src="/Frame 120.png" alt="Future" />
         <h1>Welcome to the Future</h1>
-        <p>Your skills. Your passport. Your future. Continue right where you left off with Skill Chain !</p>
+        <p>
+          Your skills. Your passport. Your future. Continue right where you left
+          off with Skill Chain!
+        </p>
       </div>
     </div>
   );
 };
+
 export default LoginPage;
