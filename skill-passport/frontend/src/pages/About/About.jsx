@@ -351,10 +351,10 @@ const About = () => {
               owned by you, and them should be as verifiable as a digital currency. Our founders saw how
               traditional resumes and certificates were prone to fraud and difficult to verify, creating
               unnecessary barriers for both talented individuals and employers. We embarked on a mission to
-              create a transparent and **tamper-proof** system for professional credentials.
+              create a transparent and tamper-proof system for professional credentials.
             </p>
             <p className="story-paragraph">
-              By leveraging blockchain, we've created the **Skill Passport**, a secure, decentralized record of your
+              By leveraging blockchain, we've created the Skill Chain, a secure, decentralized record of your
               professional journey. This allows you to carry your verified skills with you anywhere,
               proving your worth in a single click. We believe this technology will not only
               streamline hiring but also empower individuals to take full ownership of their careers.
@@ -406,7 +406,7 @@ const About = () => {
               
               <h3 className="team-member-name">Arpita Mahapatra</h3>
               <p className="team-member-role">Designer</p>
-              <p className="team-member-bio">  A talented product designer, Alex specializes in user research, wireframing, and creating beautiful, user-centric interfaces. </p>
+              <p className="team-member-bio">  A talented product designer, Arpita specializes in user research, wireframing, and creating beautiful, user-centric interfaces. </p>
             </div>
 
             <div className="team-member-card">
