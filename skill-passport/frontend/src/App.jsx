@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
+import LandingPage from './pages/Landing-Page/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/Home/SignUpPage'; // Import the new page
 import DashboardPage from './pages/DashboardPage';
@@ -15,7 +15,9 @@ function App() {
   };
   
   return (
-    <BrowserRouter>
+
+    <>
+    
       <Routes>
         <Route path="/" element={<LandingPage />} />
         
@@ -33,7 +35,12 @@ function App() {
         
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </BrowserRouter>
+       
+          <div className="h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-pink-500">
+     
+    </div>
+    </>
+   
   );
 }
 
