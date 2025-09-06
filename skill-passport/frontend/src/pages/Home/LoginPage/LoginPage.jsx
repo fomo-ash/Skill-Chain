@@ -51,6 +51,19 @@ const LoginPage = ({ handleLoginSuccess }) => {
       <div className="right-side">
         <h1>Welcome Back</h1>
         <p>Login and continue growing!</p>
+        <div className="inputs">
+          <input className='input' type='text' placeholder='Email'/>
+          <input className='input' type='text' placeholder='Password'/>
+        </div>
+        <div className="signup-btn">
+        <button>Login</button>
+        <p className='para'>Or continue with</p>
+        <div className="acc-btns">
+          <button>Facebook</button>
+          <button>Google</button>
+          <button>Apple</button>
+        </div>
+      </div>
 
         <form onSubmit={handleLogin}>
           <div className="inputs">
