@@ -1,22 +1,19 @@
 import { useState } from 'react';
 import { ethers } from 'ethers';
-import SkillPassportABI from '../contracts/SkillPassport.json'; // This is the full JSON object
+import SkillPassportABI from '../contracts/SkillPassport.json';
 
 const DashboardPage = ({ user }) => {
-  // Web3 State
   const [account, setAccount] = useState(null);
   const [contract, setContract] = useState(null);
   
-  // App-specific State
   const [passportId, setPassportId] = useState(null);
   const [skills, setSkills] = useState([]);
   const [skillName, setSkillName] = useState('');
   const [skillDesc, setSkillDesc] = useState('');
   const [status, setStatus] = useState('');
 
-  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // <-- PASTE YOUR ADDRESS
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-  // This function now lives inside the dashboard
   const connectWalletAndLoadPassport = async () => {
     try {
       if (!window.ethereum) return alert("Please install MetaMask.");
@@ -26,7 +23,6 @@ const DashboardPage = ({ user }) => {
       const signer = await provider.getSigner();
       const userAccount = await signer.getAddress();
       
-      // THE FIX IS HERE: We now use SkillPassportABI.abi
       const skillPassportContract = new ethers.Contract(contractAddress, SkillPassportABI.abi, signer);
 
       setAccount(userAccount);
@@ -58,7 +54,6 @@ const DashboardPage = ({ user }) => {
       const tx = await contract.mintPassport("ipfs://your-profile-metadata.json");
       await tx.wait();
       setStatus("Passport minted successfully! Refreshing...");
-      // Re-load passport data after minting
       await connectWalletAndLoadPassport();
     } catch (error) {
       console.error(error);
@@ -108,7 +103,6 @@ const DashboardPage = ({ user }) => {
       </header>
       
       <main className="bg-gray-800 p-6 rounded-lg shadow-lg">
-        {/* If wallet is not connected, show the connect button */}
         {!account ? (
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">Manage Your On-Chain Skills</h2>
@@ -121,7 +115,6 @@ const DashboardPage = ({ user }) => {
             </button>
           </div>
         ) : (
-          // If wallet IS connected, show the passport management UI
           <div>
             <p className="text-gray-300 mb-4"><strong>Connected Wallet:</strong> {account}</p>
             {passportId ? (

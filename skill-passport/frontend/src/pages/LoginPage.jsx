@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// The `handleLogin` prop will come from App.jsx
 const LoginPage = ({ handleLogin }) => {
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
       <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold mb-6 text-center">Welcome Back</h2>
-        {/* In our simulation, this form directly triggers the login state */}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-gray-400 mb-2" htmlFor="email">Email Address</label>
@@ -16,7 +14,7 @@ const LoginPage = ({ handleLogin }) => {
               id="email"
               className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="you@example.com"
-              defaultValue="test@user.com" // Pre-filled for simulation
+              defaultValue="test@user.com" 
               required
             />
           </div>
@@ -27,7 +25,7 @@ const LoginPage = ({ handleLogin }) => {
               id="password"
               className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="••••••••"
-              defaultValue="password" // Pre-filled for simulation
+              defaultValue="password"
               required
             />
           </div>

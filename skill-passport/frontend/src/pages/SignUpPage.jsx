@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// In a real app, this function would be passed from App.jsx and would
-// make an API call to your backend to register the user.
+
 const handleSignUp = (e) => {
   e.preventDefault();
   alert("Sign up successful! (Simulated). You can now log in.");
-  // Here you would typically redirect the user or handle the session.
 };
 
 const SignUpPage = () => {
