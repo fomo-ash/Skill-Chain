@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+
 
 // The `handleLoginSuccess` prop will come from App.jsx
 const LoginPage = ({ handleLoginSuccess }) => {

@@ -47,6 +47,7 @@ const About = () => {
           justify-content: space-between;
           align-items: center;
           z-index: 50;
+          background: black;
         }
         .header .logo {
           display: flex;
@@ -156,7 +157,7 @@ const About = () => {
         
         /* Our Story Section */
         .story-section {
-          padding: 4rem 0;
+          padding: 1rem 0;
         }
         .story-text-container {
           max-width: 50rem;
@@ -184,7 +185,8 @@ const About = () => {
           font-style: italic;
           font-size: 1.5rem;
           line-height: 2rem;
-          color: #64ffda;
+          color: #ffffff;
+          font-weight: bold;
         }
 
         /* Team Section */
