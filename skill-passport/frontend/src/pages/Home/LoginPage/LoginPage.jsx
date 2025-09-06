@@ -52,22 +52,24 @@ const LoginPage = ({ handleLogin }) => {
         </div>
         <div className="signup-btn">
         <button>Login</button>
+        <p className='para'>Or continue with</p>
+        <div className="acc-btns">
+          <button>
+            <img src='/facebook.png' />
+          </button>
+          <button>
+            <img src='/devicon_google.png'/>
+          </button>
+          <button>
+            <img src='/apple.png'/>
+          </button>
         </div>
-        <div className="login">
-          <p>Already have an account ?</p>
-          <Link 
-            to="/login" 
-            className="bg-indigo-600 hover:bg-indigo-700 text-white no-underline font-bold py-2 px-4 rounded-md transition-colors text-sm sm:text-base" 
-          >
-            Log In
-          </Link>
-
-        </div>
+      </div>
       </div>
       <div className="left-side">
         <img src='/Frame 120.png'></img>
         <h1>Welcome to the Future</h1>
-        <p>The future begins with you. Join us today to unlock your vision.</p>
+        <p>Your skills. Your passport. Your future. Continue right where you left off with Skill Chain !</p>
       </div>
     </div>
   );
