@@ -6,6 +6,8 @@ import SignUpPage from './pages/Home/SignUp/SignUpPage';
 import DashboardPage from './pages/DashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
 import About from './pages/About/About';
+import Contact from './pages/Contact/Contact';
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -21,6 +23,8 @@ function App() {
     
       <Routes>
         <Route path="/" element={<LandingPage />} />
+
+        <Route path="/contact" element={<Contact />} />
         
         <Route path="/about" element={<About />} /> 
         <Route 

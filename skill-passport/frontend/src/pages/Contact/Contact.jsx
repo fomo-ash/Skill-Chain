@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-// About component for the SkillChain website.
-const About = () => {
+
+const Contact = () => {
   return (
     <div className="main-container">
       <style jsx="true">{`
@@ -47,7 +46,7 @@ const About = () => {
           justify-content: space-between;
           align-items: center;
           z-index: 50;
-          background: black;
+          background: black
         }
         .header .logo {
           display: flex;
@@ -134,125 +133,86 @@ const About = () => {
             gap: 1rem;
         }
 
-        /* Hero Section */
-        .about-hero {
-          min-height: 60vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          flex-direction: column;
+        /* Contact Section Styles */
+        .contact-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 0;
+            min-height: calc(100vh - 12rem);
         }
-        .about-hero-title {
-          font-size: 3rem;
-          font-weight: 800;
-          color: white;
-          margin-bottom: 1rem;
+        .contact-container {
+            width: 100%;
+            max-width: 42rem;
+            margin: 0 auto;
+            background-color: #2a2a4e;
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #374151;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .about-hero-subtitle {
-          font-size: 1.25rem;
-          color: #d1d5db;
-          max-width: 45rem;
+        .contact-intro {
+            text-align: center;
+            font-size: 1.125rem;
+            color: #d1d5db;
+            margin-bottom: 2rem;
         }
-        
-        /* Our Story Section */
-        .story-section {
-          padding: 1rem 0;
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
-        .story-text-container {
-          max-width: 100rem;
-          margin: 0 auto;
-          text-align: center;
+        .form-group {
+            display: flex;
+            flex-direction: column;
         }
-        .story-paragraph {
-          font-size: 1.125rem;
-          line-height: 1.75rem;
-          color: #d1d5db;
-          margin-bottom: 1.5rem;
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #64ffda;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group textarea {
+            background-color: #1a1a2e;
+            border: 1px solid #374151;
+            color: #e0e0e0;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #4a90e2;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 8rem;
+        }
+        .contact-btn {
+            align-self: flex-start;
+            background-color: #4a90e2;
+            color: white;
+        }
+        .contact-btn:hover {
+            background-color: #5a9ceb;
+        }
+        .contact-info {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1rem;
+            color: #d1d5db;
+        }
+        .contact-info a {
+            color: #64ffda;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
         }
 
-        /* Mission Section */
-        .mission-section {
-          padding: 4rem 0;
-          background-color: #141426;
-        }
-        .mission-content {
-          max-width: 45rem;
-          margin: 0 auto;
-          text-align: center;
-        }
-        .mission-quote {
-          font-style: italic;
-          font-size: 1.5rem;
-          line-height: 2rem;
-          color: #ffffff;
-          font-weight: bold;
-        }
-
-        /* Team Section */
-        .team-section {
-  padding: 4rem 0;
-}
-
-/* New Flexbox container for the grid */
-.team-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* This centers the items on each row */
-  gap: 2rem;
-  max-width: 60rem;
-  margin: 0 auto;
-}
-
-/* Card styles (mostly from your original code) */
-.team-member-card {
-  text-align: center;
-  padding: 2rem;
-  /* Defining the width of cards for different screen sizes */
-  flex-basis: 100%; /* Mobile: 1 card per row */
-}
-
-/* Tablet: 2 cards per row */
-@media (min-width: 768px) {
-  .team-member-card {
-    flex-basis: calc(50% - 1rem);
-  }
-}
-
-/* Desktop: 3 cards per row */
-@media (min-width: 1024px) {
-  .team-member-card {
-    flex-basis: calc(33.333% - 1.34rem);
-  }
-}
-
-/* Unchanged styles for the content inside the cards */
-.team-member-image {
-  width: 8rem;
-  height: 8rem;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto 1rem;
-  border: 3px solid #64ffda;
-}
-
-.team-member-name {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: white;
-}
-
-.team-member-role {
-  font-size: 1rem;
-  color: #4a90e2;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.team-member-bio {
-  font-size: 0.875rem;
-  color: #d1d5db;
-}
 
         /* Footer Styles */
         .footer {
@@ -350,88 +310,32 @@ const About = () => {
       </header>
 
       <main className="main-content">
-        {/* About Hero Section */}
-        <section className="about-hero">
-          <h1 className="about-hero-title">About SkillChain</h1>
-          <p className="about-hero-subtitle">
-            We're building the future of professional identity with blockchain technology.
-          </p>
-        </section>
-
-        {/* Our Story Section */}
-        <section className="story-section">
-          <div className="story-text-container">
-            <h2 className="section-title">Our Story</h2>
-            <p className="story-paragraph">
-              SkillChain was born from a simple yet powerful idea: that your skills and achievements should be
-              owned by you, and them should be as verifiable as a digital currency. Our founders saw how
-              traditional resumes and certificates were prone to fraud and difficult to verify, creating
-              unnecessary barriers for both talented individuals and employers. We embarked on a mission to
-              create a transparent and tamper-proof system for professional credentials.
-            </p>
-            <p className="story-paragraph">
-              By leveraging blockchain, we've created the Skill Chain, a secure, decentralized record of your
-              professional journey. This allows you to carry your verified skills with you anywhere,
-              proving your worth in a single click. We believe this technology will not only
-              streamline hiring but also empower individuals to take full ownership of their careers.
-            </p>
-          </div>
-        </section>
-        
-        <hr />
-
-        {/* Our Mission Section */}
-        <section className="mission-section">
-          <div className="mission-content">
-            <h2 className="section-title">Our Mission</h2>
-            <p className="mission-quote">
-              "To make professional skills verifiable, portable, and eternally yours."
-            </p>
-          </div>
-        </section>
-        
-        <hr />
-
-        {/* Meet the Team Section */}
-        <section className="team-section">
-          <h2 className="section-title">Meet the Team</h2>
-          <div className="team-grid">
-            {/* Team Member 1 */}
-            <div className="team-member-card">
-              
-              <h3 className="team-member-name">Ashutosh Badapanda</h3>
-              <p className="team-member-role">Full- Stack Developer</p>
-              <p className="team-member-bio">A visionary leader with a background in decentralized systems, strategic vision and commitment to user empowerment.</p>
+        {/* Contact Section */}
+        <section className="contact-section">
+            <h1 className="section-title">Get in Touch</h1>
+            <div className="contact-container glow-effect">
+                <p className="contact-intro">
+                    We'd love to hear from you. Whether you have a question about our blockchain technology, a suggestion on how to improve the platform, or you're an employer looking to verify a skill passport, our team is ready to assist. Your feedback is crucial to our mission of building a transparent and secure future for professional credentials. Please fill out the form below, and we will get back to you promptly to address your query.
+                </p>
+                <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+                    <div className="form-group">
+                        <label htmlFor="name">Name</label>
+                        <input type="text" id="name" name="name" required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input type="email" id="email" name="email" required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" className="btn contact-btn">Send Message</button>
+                </form>
+                <div className="contact-info">
+                    <p>Or you can email us directly at contact@skillchain.com</p>
+                </div>
             </div>
-            {/* Team Member 2 */}
-            <div className="team-member-card">
-              
-              <h3 className="team-member-name">Sailen Sahoo</h3>
-              <p className="team-member-role">Full-Stack Developer</p>
-              <p className="team-member-bio">A brilliant mind in cryptography and smart contract development, Sailen leads the technical team, ensuring the platform is secure and scalable.</p>
-            </div>
-            {/* Team Member 3 */}
-            <div className="team-member-card">
-              
-              <h3 className="team-member-name">Nipuna Mahakur</h3>
-              <p className="team-member-role">Frontend Developer</p>
-              <p className="team-member-bio">Nipuna crafts the seamless user experience, making the complex world of blockchain simple and intuitive for all users.</p>
-            </div>
-
-            <div className="team-member-card">
-              
-              <h3 className="team-member-name">Arpita Mahapatra</h3>
-              <p className="team-member-role">Designer</p>
-              <p className="team-member-bio">  A talented product designer, Arpita specializes in user research, wireframing, and creating beautiful, user-centric interfaces. </p>
-            </div>
-
-            <div className="team-member-card">
-              
-              <h3 className="team-member-name">Sneha Tripathy</h3>
-              <p className="team-member-role">Frontend Developer</p>
-              <p className="team-member-bio"> As a seasoned frontend developer, Sneha focuses on building robust and responsive applications that bring the design vision to life.</p>
-            </div>
-          </div>
         </section>
       </main>
 
@@ -464,4 +368,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Contact;
