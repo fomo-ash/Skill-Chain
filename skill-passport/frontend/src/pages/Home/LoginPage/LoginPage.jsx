@@ -27,7 +27,7 @@ const LoginPage = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3790/api/auth/login", // backend login route
+        "http://localhost:3790/api/auth/loginyes ", // backend login route
         formData,
         { withCredentials: true }
       );
