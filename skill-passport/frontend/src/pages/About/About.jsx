@@ -160,7 +160,7 @@ const About = () => {
           padding: 1rem 0;
         }
         .story-text-container {
-          max-width: 50rem;
+          max-width: 100rem;
           margin: 0 auto;
           text-align: center;
         }
@@ -191,52 +191,68 @@ const About = () => {
 
         /* Team Section */
         .team-section {
-          padding: 4rem 0;
-        }
-        .team-grid {
-          display: grid;
-          grid-template-columns: repeat(1, 1fr);
-          gap: 2rem;
-          max-width: 60rem;
-          margin: 0 auto;
-        }
-        @media (min-width: 768px) {
-          .team-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-        @media (min-width: 1024px) {
-          .team-grid {
-            grid-template-columns: repeat(3, 1fr);
-          }
-        }
-        .team-member-card {
-          text-align: center;
-          padding: 2rem;
-        }
-        .team-member-image {
-          width: 8rem;
-          height: 8rem;
-          border-radius: 50%;
-          object-fit: cover;
-          margin: 0 auto 1rem;
-          border: 3px solid #64ffda;
-        }
-        .team-member-name {
-          font-size: 1.5rem;
-          font-weight: 600;
-          color: white;
-        }
-        .team-member-role {
-          font-size: 1rem;
-          color: #4a90e2;
-          font-weight: 500;
-          margin-bottom: 0.5rem;
-        }
-        .team-member-bio {
-          font-size: 0.875rem;
-          color: #d1d5db;
-        }
+  padding: 4rem 0;
+}
+
+/* New Flexbox container for the grid */
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* This centers the items on each row */
+  gap: 2rem;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+/* Card styles (mostly from your original code) */
+.team-member-card {
+  text-align: center;
+  padding: 2rem;
+  /* Defining the width of cards for different screen sizes */
+  flex-basis: 100%; /* Mobile: 1 card per row */
+}
+
+/* Tablet: 2 cards per row */
+@media (min-width: 768px) {
+  .team-member-card {
+    flex-basis: calc(50% - 1rem);
+  }
+}
+
+/* Desktop: 3 cards per row */
+@media (min-width: 1024px) {
+  .team-member-card {
+    flex-basis: calc(33.333% - 1.34rem);
+  }
+}
+
+/* Unchanged styles for the content inside the cards */
+.team-member-image {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  border: 3px solid #64ffda;
+}
+
+.team-member-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+}
+
+.team-member-role {
+  font-size: 1rem;
+  color: #4a90e2;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.team-member-bio {
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
 
         /* Footer Styles */
         .footer {
