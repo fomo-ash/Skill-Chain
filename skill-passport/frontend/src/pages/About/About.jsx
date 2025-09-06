@@ -413,7 +413,7 @@ const About = () => {
               
               <h3 className="team-member-name">Sneha Tripathy</h3>
               <p className="team-member-role">Frontend Developer</p>
-              <p className="team-member-bio"> As a seasoned frontend developer, Maya focuses on building robust and responsive applications that bring the design vision to life.</p>
+              <p className="team-member-bio"> As a seasoned frontend developer, Sneha focuses on building robust and responsive applications that bring the design vision to life.</p>
             </div>
           </div>
         </section>
