@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { ethers } from 'ethers';
 import SkillPassportABI from '../contracts/SkillPassport.json';
+import './DashboardPage.css'; // Import the new CSS file
 
 const DashboardPage = ({ user }) => {
+  // Web3 State
   const [account, setAccount] = useState(null);
   const [contract, setContract] = useState(null);
   
+  // App-specific State
   const [passportId, setPassportId] = useState(null);
   const [skills, setSkills] = useState([]);
   const [skillName, setSkillName] = useState('');
   const [skillDesc, setSkillDesc] = useState('');
   const [status, setStatus] = useState('');
 
-  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  // IMPORTANT: Paste your deployed contract address here
+  const contractAddress = "YOUR_DEPLOYED_CONTRACT_ADDRESS";
 
   const connectWalletAndLoadPassport = async () => {
     try {
@@ -22,7 +26,6 @@ const DashboardPage = ({ user }) => {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const userAccount = await signer.getAddress();
-      
       const skillPassportContract = new ethers.Contract(contractAddress, SkillPassportABI.abi, signer);
 
       setAccount(userAccount);
@@ -31,7 +34,7 @@ const DashboardPage = ({ user }) => {
       setStatus("Wallet connected. Checking for your passport...");
       const hasPassport = await skillPassportContract.hasPassport(userAccount);
       if (hasPassport) {
-        const balance = await skillPassportContract.balanceOf(userAccount);
+        const balance = await contract.balanceOf(userAccount);
         if (balance > 0) {
           const userPassportId = await skillPassportContract.tokenOfOwnerByIndex(userAccount, 0);
           setPassportId(userPassportId.toString());
@@ -43,7 +46,7 @@ const DashboardPage = ({ user }) => {
       }
     } catch (error) {
       console.error("Connection failed", error);
-      setStatus("Error connecting wallet. See console for details.");
+      setStatus("Error connecting wallet. Make sure you're on the Hardhat Localhost network.");
     }
   };
 
@@ -93,70 +96,68 @@ const DashboardPage = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 sm:p-8">
-      <header className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div className="text-right">
-          <p className="text-gray-400">Logged in as</p>
-          <p className="font-semibold">{user.email}</p>
+    <div className="dashboard-container">
+      <header className="dashboard-header">
+        <h1>Dashboard</h1>
+        <div className="user-info">
+          <p className="label">Logged in as</p>
+          <p className="email">{user.email}</p>
         </div>
       </header>
       
-      <main className="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <main className="dashboard-main">
         {!account ? (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4">Manage Your On-Chain Skills</h2>
-            <p className="text-gray-400 mb-6">Connect your MetaMask wallet to view, create, or update your Skill Passport.</p>
+          <div className="connect-wallet-section">
+            <h2>Manage Your On-Chain Skills</h2>
+            <p>Connect your MetaMask wallet to view, create, or update your Skill Passport.</p>
             <button
               onClick={connectWalletAndLoadPassport}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg"
+              className="button button-primary"
             >
               Connect Wallet
             </button>
           </div>
         ) : (
-          <div>
-            <p className="text-gray-300 mb-4"><strong>Connected Wallet:</strong> {account}</p>
+          <div className="passport-details">
+            <p><strong>Connected Wallet:</strong> {account}</p>
             {passportId ? (
               <div>
-                <h3 className="text-xl font-bold mb-4">Your Passport ID: {passportId}</h3>
-                <form onSubmit={addSkill} className="space-y-4 mb-8">
+                <h3>Your Passport ID: <span className="passport-id">{passportId}</span></h3>
+                <form onSubmit={addSkill} className="skill-form">
                   <input
                     value={skillName}
                     onChange={(e) => setSkillName(e.target.value)}
                     placeholder="Skill Name (e.g., Solidity)"
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required
                   />
                   <input
                     value={skillDesc}
                     onChange={(e) => setSkillDesc(e.target.value)}
                     placeholder="Description (e.g., Wrote ERC721)"
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     required
                   />
-                  <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                  <button type="submit" className="button button-green">
                     Add Skill to Passport
                   </button>
                 </form>
 
-                <h4 className="text-lg font-semibold mb-2">Your Verifiable Skills:</h4>
-                <div className="space-y-2">
+                <h4>Your Verifiable Skills:</h4>
+                <div className="skills-list">
                   {skills.length > 0 ? (
                     skills.map((skill, index) => (
-                      <div key={index} className="bg-gray-700 p-3 rounded-md">
+                      <div key={index} className="skill-card">
                         <strong>{skill.name}</strong>: {skill.description}
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-400">No skills added yet.</p>
+                    <p>No skills added yet.</p>
                   )}
                 </div>
               </div>
             ) : (
-              <div className="text-center">
-                <p className="mb-4 text-yellow-400">No Skill Passport found for this wallet.</p>
-                <button onClick={mintPassport} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+              <div className="mint-container">
+                <p>No Skill Passport found for this wallet.</p>
+                <button onClick={mintPassport} className="button button-primary">
                   Mint Your Passport
                 </button>
               </div>
@@ -164,7 +165,7 @@ const DashboardPage = ({ user }) => {
           </div>
         )}
 
-        {status && <p className="mt-4 text-center text-gray-400">{status}</p>}
+        {status && <p className="status-message">{status}</p>}
       </main>
     </div>
   );
