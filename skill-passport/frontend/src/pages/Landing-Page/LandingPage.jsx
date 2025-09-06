@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // The main App component containing all the page's content and logic.
 const App = () => {
+    const navigate = useNavigate();
+
+
     return (
         <div className="main-container">
             <style jsx="true">{`
@@ -13,7 +16,7 @@ const App = () => {
                     background: linear-gradient(135deg, #1f1f3a, #1a1a2e);
                     color: #e0e0e0;
                     min-height: 200vh;
-                    padding-top: 5rem;
+                    padding-top: 1rem;
                 }
 
                 .glow-effect {
@@ -120,7 +123,7 @@ const App = () => {
                     align-items: center;
                     justify-content: space-between;
                     min-height: 100vh;
-                    padding-top: 5rem;
+                    padding-top: 1;
                 }
                 @media (min-width: 1024px) {
                     .hero-section {
@@ -416,8 +419,8 @@ const App = () => {
                     <span className="logo-text">SkillChain</span>
                 </div>
                 <nav className="nav">
-                    <Link to="/signup" href=""/>Sign-Up
-                    <Link href="/login"/>Login
+                    <Link to="/signup">Sign-Up</Link>
+                    <Link to="/login">Login</Link>
                     <Link href="/about"/>About
                     
                 </nav>
@@ -436,8 +439,8 @@ const App = () => {
                         <h1 className="hero-title">Your Skills, Verified Forever</h1>
                         <p className="hero-subtitle">A blockchain-powered skill passport that makes your achievements trusted, portable, and tamper-proof.</p>
                         <div className="hero-buttons">
-                            <button className="btn login-btn">Login</button>
-                            <button className="btn signup-btn">Sign Up</button>
+                            <button className="btn login-btn" onClick={() => navigate('/login')}>Login</button>
+                            <button className="btn signup-btn" onClick={() => navigate('/signup')}>Sign Up</button>
                         </div>
                     </div>
                     <div className="hero-image-container">
@@ -550,9 +553,6 @@ const App = () => {
                             <h3 className="card-title">Portable Digital Resume</h3>
                             <p className="card-text">Your blockchain skill passport travels with you everywhere, accessible globally.</p>
                         </div>
-                    </div>
-                    <div className="cta-container">
-                        <button className="btn join-btn">Join Now</button>
                     </div>
                 </section>
             </main>
