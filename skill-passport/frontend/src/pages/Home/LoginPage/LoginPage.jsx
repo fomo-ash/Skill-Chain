@@ -54,15 +54,9 @@ const LoginPage = ({ handleLogin }) => {
         <button>Login</button>
         <p className='para'>Or continue with</p>
         <div className="acc-btns">
-          <button>
-            <img src='/facebook.png' />
-          </button>
-          <button>
-            <img src='/devicon_google.png'/>
-          </button>
-          <button>
-            <img src='/apple.png'/>
-          </button>
+          <button>Facebook</button>
+          <button>Google</button>
+          <button>Apple</button>
         </div>
       </div>
       </div>
