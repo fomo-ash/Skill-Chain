@@ -1,21 +1,22 @@
-import express from 'express'
-import dotenv from 'dotenv'
-dotenv.config()
-import cors from "cors"
-import authroutes from "./routes/auth.route.js"
-import { connectDB } from './lib/db.js'
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors"; // 1. Import cors
+import { connectDB } from "./lib/db.js";
+import authRoutes from "./routes/auth.route.js";
+import cookieParser from "cookie-parser";
 
-const app= express()
+dotenv.config();
 
-app.use(express.json())
-app.use(cors())
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.use("/api/auth",authroutes);
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors()); // 2. Use cors middleware
 
-const PORT = process.env.PORT
+app.use("/api/auth", authRoutes);
 
-
-app.listen(PORT, ()=>{
-    console.log("Port running at port")
-    connectDB();
-})
+app.listen(PORT, () => {
+  console.log(`Port running at port ${PORT}`);
+  connectDB();
+});

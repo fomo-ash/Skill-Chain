@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-const LoginPage = ({ handleLogin }) => {
+// The `handleLoginSuccess` prop will come from App.jsx
+const LoginPage = ({ handleLoginSuccess }) => {
+  const [email, setEmail] = useState('test@user.com');
+  const [password, setPassword] = useState('password');
+  const [error, setError] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const res = await axios.post("http://localhost:8000/api/auth/login", {
+        email,
+        password,
+      });
+      // On success, call the function from App.jsx to set the user state
+      handleLoginSuccess(res.data);
+    } catch (err) {
+      setError(err.response?.data?.error || "An error occurred during login.");
+      console.error(err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
       <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
@@ -12,9 +34,9 @@ const LoginPage = ({ handleLogin }) => {
             <input 
               type="email" 
               id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="you@example.com"
-              defaultValue="test@user.com" 
               required
             />
           </div>
@@ -23,12 +45,13 @@ const LoginPage = ({ handleLogin }) => {
             <input 
               type="password" 
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="••••••••"
-              defaultValue="password"
               required
             />
           </div>
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
           <button 
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition-colors text-lg"
