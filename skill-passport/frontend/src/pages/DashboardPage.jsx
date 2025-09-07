@@ -16,7 +16,7 @@ const DashboardPage = ({ user }) => {
   const [status, setStatus] = useState('');
 
   // IMPORTANT: Paste your deployed contract address here
-  const contractAddress = "YOUR_DEPLOYED_CONTRACT_ADDRESS";
+  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
   const connectWalletAndLoadPassport = async () => {
     try {
