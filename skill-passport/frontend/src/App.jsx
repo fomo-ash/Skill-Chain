@@ -8,6 +8,7 @@ import DashboardPage from './pages/DashboardPage';
 import About from './pages/About/About'; 
 import Contact from './pages/Contact/Contact'; 
 import NotFoundPage from './pages/NotFoundPage';
+import UserCredentialCard from './pages/Card/UserCredentialCard'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,6 +34,12 @@ function App() {
         <Route 
           path="/dashboard" 
           element={user ? <DashboardPage user={user} /> : <Navigate to="/login" />} 
+        />
+
+        <Route 
+          path="/card" 
+          // If a user is not logged in, trying to access /UserCredentialCard will redirect them to /login
+          element={<UserCredentialCard />}
         />
         
         <Route path="*" element={<NotFoundPage />} />
