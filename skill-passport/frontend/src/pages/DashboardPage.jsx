@@ -1,28 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import SkillPassportABI from '../contracts/SkillPassport.json';
-import './DashboardPage.css'; // Import the new CSS file
+import UserCredentialCard from './Card/UserCredentialCard.jsx';
+import './DashboardPage.css';
 
 const DashboardPage = ({ user }) => {
-  // Web3 State
   const [account, setAccount] = useState(null);
   const [contract, setContract] = useState(null);
-  
-  // App-specific State
-  const [passportId, setPassportId] = useState(null);
-  const [skills, setSkills] = useState([]);
-  const [skillName, setSkillName] = useState('');
-  const [skillDesc, setSkillDesc] = useState('');
+  const [passports, setPassports] = useState([]);
   const [status, setStatus] = useState('');
+  
+  // State for the new minting form
+  const [projectRole, setProjectRole] = useState('');
+  const [projectDetails, setProjectDetails] = useState('');
 
-  // IMPORTANT: Paste your deployed contract address here
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-  const connectWalletAndLoadPassport = async () => {
+  const connectWalletAndLoadData = async () => {
     try {
       if (!window.ethereum) return alert("Please install MetaMask.");
 
-      setStatus("Connecting to MetaMask...");
+      setStatus("Connecting...");
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const userAccount = await signer.getAddress();
@@ -31,69 +29,83 @@ const DashboardPage = ({ user }) => {
       setAccount(userAccount);
       setContract(skillPassportContract);
 
-      setStatus("Wallet connected. Checking for your passport...");
-      const hasPassport = await skillPassportContract.hasPassport(userAccount);
-      if (hasPassport) {
-        const balance = await contract.balanceOf(userAccount);
-        if (balance > 0) {
-          const userPassportId = await skillPassportContract.tokenOfOwnerByIndex(userAccount, 0);
-          setPassportId(userPassportId.toString());
-          await fetchSkills(skillPassportContract, userPassportId);
-          setStatus("Passport found and skills loaded.");
-        }
-      } else {
-        setStatus("No passport found for this wallet. Please mint one to begin.");
-      }
+      await fetchPassports(userAccount, skillPassportContract);
     } catch (error) {
       console.error("Connection failed", error);
-      setStatus("Error connecting wallet. Make sure you're on the Hardhat Localhost network.");
+      setStatus("Error connecting wallet.");
     }
   };
 
-  const mintPassport = async () => {
-    if (!contract) return;
-    try {
-      setStatus("Minting passport... check MetaMask transaction.");
-      const tx = await contract.mintPassport("ipfs://your-profile-metadata.json");
-      await tx.wait();
-      setStatus("Passport minted successfully! Refreshing...");
-      await connectWalletAndLoadPassport();
-    } catch (error) {
-      console.error(error);
-      setStatus(`Error: ${error.reason || error.message}`);
+  const fetchPassports = async (userAccount, skillPassportContract) => {
+    setStatus("Fetching passports...");
+    const balance = await skillPassportContract.balanceOf(userAccount);
+    if (balance > 0) {
+      const passportData = [];
+      for (let i = 0; i < balance; i++) {
+        const tokenId = await skillPassportContract.tokenOfOwnerByIndex(userAccount, i);
+        const tokenURI = await skillPassportContract.tokenURI(tokenId);
+        
+        // In a real app, you would fetch JSON from the tokenURI.
+        // For now, we'll parse the mock data from the URI string.
+        let parsedData = {};
+        try {
+          const jsonString = tokenURI.replace('data:application/json,', '');
+          parsedData = JSON.parse(decodeURIComponent(jsonString));
+        } catch (e) {
+            // Fallback for older/unformatted URIs
+        }
+
+        passportData.push({
+          id: tokenId.toString(),
+          name: user.fullname,
+          role: parsedData.role || `Role for Passport #${tokenId.toString()}`,
+          details: parsedData.details || `Details for Passport #${tokenId.toString()}`,
+          walletAddress: userAccount
+        });
+      }
+      setPassports(passportData);
+      setStatus(`Found ${passportData.length} passport(s).`);
+    } else {
+      setStatus("No passports found. Mint one to begin.");
     }
   };
-  
-  const addSkill = async (e) => {
+
+  const handleMintPassport = async (e) => {
     e.preventDefault();
-    if (!contract || !passportId) return;
+    if (!contract || !projectRole || !projectDetails) return alert("Please fill in all fields.");
+    
     try {
-      setStatus(`Adding skill "${skillName}"...`);
-      const tx = await contract.addSkill(passportId, skillName, skillDesc, "http://github.com/proof-link");
+      setStatus("Preparing passport metadata...");
+      // Create metadata and URI on-the-fly
+      const metadata = {
+        name: `${user.fullname}'s Passport`,
+        description: "A verifiable credential for project contributions.",
+        role: projectRole,
+        details: projectDetails
+      };
+      const tokenURI = `data:application/json,${encodeURIComponent(JSON.stringify(metadata))}`;
+
+      setStatus("Minting new passport...");
+      const tx = await contract.mintPassport(tokenURI);
       await tx.wait();
-      setStatus("Skill added successfully!");
-      await fetchSkills(contract, passportId);
-      setSkillName('');
-      setSkillDesc('');
+      setStatus("New passport minted successfully! Refreshing...");
+      
+      // Clear form and reload data
+      setProjectRole('');
+      setProjectDetails('');
+      await fetchPassports(account, contract);
     } catch (error) {
       console.error(error);
       setStatus(`Error: ${error.reason || error.message}`);
     }
   };
 
-  const fetchSkills = async (contractInstance, tokenId) => {
-    try {
-      const userSkills = await contractInstance.getSkills(tokenId);
-      const formattedSkills = userSkills.map(skill => ({
-        name: skill[0],
-        description: skill[1],
-        proofLink: skill[2]
-      }));
-      setSkills(formattedSkills);
-    } catch (error) {
-      console.error("Could not fetch skills", error);
+  // Automatically connect wallet on component load
+  useEffect(() => {
+    if (user) {
+      connectWalletAndLoadData();
     }
-  };
+  }, [user]);
 
   return (
     <div className="dashboard-container">
@@ -101,70 +113,50 @@ const DashboardPage = ({ user }) => {
         <h1>Dashboard</h1>
         <div className="user-info">
           <p className="label">Logged in as</p>
-          <p className="email">{user.email}</p>
+          <p className="email">{user.fullname}</p>
         </div>
       </header>
       
       <main className="dashboard-main">
         {!account ? (
           <div className="connect-wallet-section">
-            <h2>Manage Your On-Chain Skills</h2>
-            <p>Connect your MetaMask wallet to view, create, or update your Skill Passport.</p>
-            <button
-              onClick={connectWalletAndLoadPassport}
-              className="button button-primary"
-            >
-              Connect Wallet
-            </button>
+            <p>Please connect your wallet to continue.</p>
+            <button onClick={connectWalletAndLoadData} className="button button-primary">Connect Wallet</button>
           </div>
         ) : (
-          <div className="passport-details">
-            <p><strong>Connected Wallet:</strong> {account}</p>
-            {passportId ? (
-              <div>
-                <h3>Your Passport ID: <span className="passport-id">{passportId}</span></h3>
-                <form onSubmit={addSkill} className="skill-form">
-                  <input
-                    value={skillName}
-                    onChange={(e) => setSkillName(e.target.value)}
-                    placeholder="Skill Name (e.g., Solidity)"
-                    required
-                  />
-                  <input
-                    value={skillDesc}
-                    onChange={(e) => setSkillDesc(e.target.value)}
-                    placeholder="Description (e.g., Wrote ERC721)"
-                    required
-                  />
-                  <button type="submit" className="button button-green">
-                    Add Skill to Passport
-                  </button>
-                </form>
+          <div>
+            <div className="skill-management">
+              <h3>Enter Details for a New Skill Passport</h3>
+              <form onSubmit={handleMintPassport} className="skill-form">
+                <input 
+                  value={projectRole} 
+                  onChange={(e) => setProjectRole(e.target.value)} 
+                  placeholder="Project Role (e.g., Lead Developer)" 
+                  required 
+                />
+                <input 
+                  value={projectDetails} 
+                  onChange={(e) => setProjectDetails(e.target.value)} 
+                  placeholder="Project Details (e.g., ChainLink Fall 2025 Winner)" 
+                  required 
+                />
+                <button type="submit" className="button button-primary">Mint New Passport</button>
+              </form>
+            </div>
+            
+            <hr style={{ border: '1px solid #374151', margin: '2rem 0' }} />
 
-                <h4>Your Verifiable Skills:</h4>
-                <div className="skills-list">
-                  {skills.length > 0 ? (
-                    skills.map((skill, index) => (
-                      <div key={index} className="skill-card">
-                        <strong>{skill.name}</strong>: {skill.description}
-                      </div>
-                    ))
-                  ) : (
-                    <p>No skills added yet.</p>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className="mint-container">
-                <p>No Skill Passport found for this wallet.</p>
-                <button onClick={mintPassport} className="button button-primary">
-                  Mint Your Passport
-                </button>
-              </div>
-            )}
+            <div className="passports-grid">
+              {passports.length > 0 ? (
+                passports.map(passport => (
+                  <UserCredentialCard key={passport.id} passport={passport} />
+                ))
+              ) : (
+                <p>You don't have any passports yet.</p>
+              )}
+            </div>
           </div>
         )}
-
         {status && <p className="status-message">{status}</p>}
       </main>
     </div>

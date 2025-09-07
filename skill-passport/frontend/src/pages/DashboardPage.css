@@ -143,3 +143,9 @@
 .skill-card strong {
     color: #a5b4fc; /* Light Indigo */
 }
+.passports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+    gap: 2rem;
+    justify-items: center;
+}
