@@ -141,6 +141,8 @@ const DashboardPage = ({ user }) => {
                   required 
                 />
                 <button type="submit" className="button button-primary">Mint New Passport</button>
+
+                <button type="submit" className='button button-primary'>Verify Your Claims</button>
               </form>
             </div>
             
