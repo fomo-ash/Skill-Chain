@@ -9,6 +9,7 @@ import DashboardPage from './pages/DashboardPage';
 import About from './pages/About/About'; // Re-added
 import Contact from './pages/Contact/Contact'; // Re-added
 import NotFoundPage from './pages/NotFoundPage';
+import UserCredentialCard from './pages/Card/UserCredentialCard'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,6 +43,12 @@ function App() {
           path="/dashboard" 
           // If a user is not logged in, trying to access /dashboard will redirect them to /login
           element={user ? <DashboardPage user={user} /> : <Navigate to="/login" />} 
+        />
+
+        <Route 
+          path="/card" 
+          // If a user is not logged in, trying to access /UserCredentialCard will redirect them to /login
+          element={<UserCredentialCard />}
         />
         
         {/* Fallback Route */}
