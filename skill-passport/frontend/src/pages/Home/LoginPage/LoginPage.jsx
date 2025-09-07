@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../../lib/axios"; 
 
-// This prop will be passed down from App.jsx to update the parent state
 const LoginPage = ({ handleLoginSuccess }) => {
   const navigate = useNavigate();
 
-  // Form state for email and password
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,28 +13,19 @@ const LoginPage = ({ handleLoginSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     setLoading(true);
     setError("");
 
     try {
-      const res = await axios.post(
-        "http://localhost:3790/api/auth/login ", // backend login route
-        formData,
-        { withCredentials: true }
-      );
+      const res = await axiosInstance.post("/auth/login", formData);
 
-      // On successful login, call the function passed from App.jsx
       handleLoginSuccess(res.data);
-
-      // The navigation will now be handled automatically by the router in App.jsx
 
     } catch (err) {
       console.error("Login error:", err);
@@ -51,19 +40,38 @@ const LoginPage = ({ handleLoginSuccess }) => {
       <div className="right-side">
         <h1>Welcome Back</h1>
         <p>Login and continue growing!</p>
-        <div className="inputs">
-          <input className='input' type='text' placeholder='Email'/>
-          <input className='input' type='text' placeholder='Password'/>
-        </div>
-        <div className="signup-btn">
-        <button>Login</button>
-        <p className='para'>Or continue with</p>
-        <div className="acc-btns">
-          <button>Facebook</button>
-          <button>Google</button>
-          <button>Apple</button>
-        </div>
-      </div>
+        <form onSubmit={handleLogin}>
+          <div className="inputs">
+            <input
+              className="input"
+              type="email" 
+              name="email" 
+              placeholder="Email"
+              value={formData.email} 
+              onChange={handleChange} 
+            />
+            <input
+              className="input"
+              type="password" 
+              name="password" 
+              placeholder="Password"
+              value={formData.password} 
+              onChange={handleChange} 
+            />
+          </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          <div className="signup-btn">
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+            <p className="para">Or continue with</p>
+            <div className="acc-btns">
+              <button>Facebook</button>
+              <button>Google</button>
+              <button>Apple</button>
+            </div>
+          </div>
+        </form>
       </div>
 
       <div className="left-side">
