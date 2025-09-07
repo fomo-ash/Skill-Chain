@@ -73,10 +73,17 @@ const App = () => {
                 }
                 .header .nav a {
                     color: #d1d5db;
-                    transition: color 0.3s ease;
+                    /* Added padding and border-radius for a better look */
+                    padding: 8px 16px;
+                    border-radius: 6px;
+                    text-decoration: none;
+                    /* Updated transition to include background-color */
+                    transition: color 0.3s ease, background-color 0.3s ease;
                 }
                 .header .nav a:hover {
-                    color: #4a90e2;
+                    /* Kept the color change and added a background color */
+                    color: #ffffff;
+                    background-color: #4a90e2;
                 }
                 .header .join-btn {
                     background-color: #4a90e2;
@@ -410,14 +417,15 @@ const App = () => {
                 }
             `}</style>
             
-            {/* Header */}
             <header className="header">
-                <div className="logo">
-                    <svg className="logo-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.485 9.176 4.675 7.5 4.5 5.824 4.325 4.168 5.485 3 6.253M12 6.253c1.168-.768 2.824-1.801 4.5-1.75 1.676.051 3.332.617 4.5 1.75M12 6.253a6 6 0 00-4.5 1.75 6 6 0 00-1.5 4.5 6 6 0 006 6 6 6 0 006-6 6 6 0 00-1.5-4.5" />
-                    </svg>
-                    <span className="logo-text">SkillChain</span>
-                </div>
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                    <div className="logo">
+                        <svg className="logo-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.485 9.176 4.675 7.5 4.5 5.824 4.325 4.168 5.485 3 6.253M12 6.253c1.168-.768 2.824-1.801 4.5-1.75 1.676.051 3.332.617 4.5 1.75M12 6.253a6 6 0 00-4.5 1.75 6 6 0 00-1.5 4.5 6 6 0 006 6 6 6 0 006-6 6 6 0 00-1.5-4.5" />
+                        </svg>
+                        <span className="logo-text">SkillChain</span>
+                    </div>
+                </Link>
                 <nav className="nav">
                     <Link to="/signup">Sign-Up</Link>
                     <Link to="/login">Login</Link>
@@ -425,7 +433,7 @@ const App = () => {
                     <Link to="/contact">Contact</Link>
                     
                 </nav>
-                <button className="btn join-btn">Join Now</button>
+                <button className="btn join-btn" onClick={() => navigate('/signup')}>Join Now</button>
                 <button className="menu-btn">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
