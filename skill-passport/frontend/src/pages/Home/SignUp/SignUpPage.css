@@ -48,6 +48,7 @@ a {
   font-size: 20px;
   padding-left: 1rem;
   border: none;
+  color: #79c6b4;
 }
 .input::placeholder{
   color: #79c6b4;
